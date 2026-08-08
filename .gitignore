@@ -1,0 +1,19 @@
+# Build Maven
+Backend_2026/target/
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Fichiers de configuration avec secrets -- JAMAIS sur GitHub
+Backend_2026/src/main/resources/application.properties
+
+# Pour plus tard, quand tu ajouteras Angular
+Frontend_2026/node_modules/
+Frontend_2026/dist/
+Frontend_2026/.angular/
+
+# Divers
+.DS_Store
