@@ -32,12 +32,18 @@ public class StagiaireCompetence {
     @JoinColumn(name = "stagiaire_id", nullable = false)
     private Stagiaire stagiaire;
 
+    // Nullable desormais : une competence detectee dans le CV mais absente
+    // du referentiel n'a rien a quoi se lier -- voir nomDetecte ci-dessous.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "competence_id", nullable = false)
+    @JoinColumn(name = "competence_id")
     private Competence competence;
 
-    // Nullable : une competence extraite automatiquement du CV
-    // (source = OCR_CV) n'a souvent pas de niveau associe.
+    // Toujours rempli pour une ligne OCR_CV (liee ou non) -- permet de
+    // comparer un nom meme quand "competence" est null.
+    @Column(name = "nom_detecte")
+    @ToString.Include
+    private String nomDetecte;
+
     @Enumerated(EnumType.STRING)
     @ToString.Include
     private NiveauCompetence niveau;

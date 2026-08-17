@@ -5,6 +5,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.sbgs.backend_2026.dto.Stage.StageResponse;
 import com.sbgs.backend_2026.entity.Stage;
 import com.sbgs.backend_2026.repository.StageRepository;
+import com.sbgs.backend_2026.service.Competance.CvExtractionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class StageService {
 
     private final StageRepository stageRepository;
+    private final CvExtractionService cvExtractionService;
 
     @org.springframework.beans.factory.annotation.Value("${application.entreprise.nom:Nom de l'entreprise}")
     private String nomEntreprise;
@@ -80,6 +82,8 @@ public class StageService {
         if (stage.getDateGenerationAttestation() != null) {
             throw new IllegalStateException("L'attestation a deja ete generee pour ce stage");
         }
+
+        cvExtractionService.extraireEtSynchroniser(stage);
 
         byte[] pdf = genererAttestationPdf(stage);
         stage.setAttestationFichier(pdf);
