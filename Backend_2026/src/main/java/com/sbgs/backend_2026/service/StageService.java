@@ -46,11 +46,16 @@ public class StageService {
     }
 
     @Transactional(readOnly = true)
-    public List<StageResponse> lister(UUID responsableStageId) {
-        if (responsableStageId != null) {
-            return stageRepository.findMetadataByResponsableStageId(responsableStageId);
+    public List<StageResponse> lister(UUID serviceId) {
+        List<Stage> stages;
+        if (serviceId != null) {
+            stages = stageRepository.findByAffectations_Service_Id(serviceId);
+        } else {
+            stages = stageRepository.findAll();
         }
-        return stageRepository.findAllMetadata();
+        return stages.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -72,10 +77,6 @@ public class StageService {
         Stage stage = stageRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Stage introuvable : " + id));
 
-        // Verification de "presence + rapport" simplifiee, vu le temps disponible :
-        // le rapport doit exister. Le nombre d'absences reste consultable via
-        // GET .../absences mais ne bloque pas encore la validation (pas de seuil
-        // defini dans le cahier des charges) -- amelioration future possible.
         if (stage.getRapportFichier() == null) {
             throw new IllegalStateException("Le rapport de stage n'a pas encore ete depose");
         }
@@ -122,7 +123,6 @@ public class StageService {
                 .collect(Collectors.joining(", "));
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            // Marge du haut pour le logo, marge du bas pour la bande rouge (~3 cm + espace)
             Document document = new Document(PageSize.A4, 36, 36, 130, 100);
             PdfWriter writer = PdfWriter.getInstance(document, out);
             writer.setPageEvent(new EnTeteAttestation(nomEntreprise, adresseEntreprise, telephoneEntreprise));
@@ -192,13 +192,25 @@ public class StageService {
     }
 
     private StageResponse toResponse(Stage s) {
+        String nomComplet = s.getDemandeStage().getStagiaire().getPrenom()
+                + " " + s.getDemandeStage().getStagiaire().getNom();
+        // ❌ PAS DE COMPTAGE D'ABSENCES ICI
         return new StageResponse(
-                s.getId(), s.getDateDebut(), s.getDateFin(), s.getDateGenerationAttestation(),
-                s.isAttestationRemise(), s.getRapportNomFichier(), s.getRapportTypeContenu(),
-                s.getRapportDateDepot(), s.getThemeStage(),
-                s.getResponsableStage() != null ? s.getResponsableStage().getId() : null
-        );
+                s.getId(),
+                s.getDateDebut(),
+                s.getDateFin(),
+                s.getDateGenerationAttestation(),
+                s.isAttestationRemise(),
+                s.getRapportNomFichier(),
+                s.getRapportTypeContenu(),
+                s.getRapportDateDepot(),
+                s.getThemeStage(),
+                s.getResponsableStage() != null ? s.getResponsableStage().getId() : null,
+                nomComplet,0,
+                s.getDemandeStage().getTypeStage().name()
+                );
     }
+
 
     private static class EnTeteAttestation extends PdfPageEventHelper {
 

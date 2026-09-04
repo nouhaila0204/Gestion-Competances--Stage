@@ -27,8 +27,8 @@ public class StageController {
     }
 
     @GetMapping
-    public List<StageResponse> lister(@RequestParam(required = false) UUID responsableStageId) {
-        return stageService.lister(responsableStageId);
+    public List<StageResponse> lister(@RequestParam(required = false) UUID serviceId) {
+        return stageService.lister(serviceId);
     }
 
     @PostMapping(value = "/{id}/rapport", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

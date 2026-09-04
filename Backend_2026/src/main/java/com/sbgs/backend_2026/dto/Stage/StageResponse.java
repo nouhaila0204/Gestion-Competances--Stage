@@ -13,6 +13,9 @@ public record StageResponse(
         String rapportTypeContenu,
         LocalDate rapportDateDepot,
         String themeStage,
-        UUID responsableStageId
+        UUID responsableStageId,
+        String stagiaireNomComplet, // ✅ NOUVEAU
+        Integer nombreAbsences ,    // ✅ NOUVEAU
+        String typeStage
 ) {
 }

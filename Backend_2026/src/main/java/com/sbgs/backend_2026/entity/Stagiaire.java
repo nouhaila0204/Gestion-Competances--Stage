@@ -56,4 +56,7 @@ public class Stagiaire {
     @OneToMany(mappedBy = "stagiaire", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<StagiaireCompetence> competences = new ArrayList<>();
+
+    public void setEcole(Ecole ecole) {
+    }
 }

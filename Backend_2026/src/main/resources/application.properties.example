@@ -19,3 +19,9 @@ spring.mail.username=<Tom email>
 spring.mail.password=<ton-mot-de-passe-application-gmail>
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
+
+application.security.jwt.secret=CHANGE_MOI_avec_une_chaine_aleatoire_d_au_moins_32_caracteres
+application.security.jwt.expiration-ms=86400000
+
+application.security.jwt.cookie-secure=false\
+  (on peut passer à true dans https si on deploie notre site un jour)

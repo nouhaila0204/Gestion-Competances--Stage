@@ -1,16 +1,13 @@
 package com.sbgs.backend_2026.controller;
 
-import com.sbgs.backend_2026.dto.Stage.DeciderRhRequest;
-import com.sbgs.backend_2026.dto.Stage.DemandeStageCreateRequest;
-import com.sbgs.backend_2026.dto.Stage.DemandeStageResponse;
-import com.sbgs.backend_2026.dto.Stage.PieceJointe;
-import com.sbgs.backend_2026.dto.Stage.TraiterDossierRequest;
+import com.sbgs.backend_2026.dto.Stage.*;
 import com.sbgs.backend_2026.entity.enums.TypeDocument;
 import com.sbgs.backend_2026.entity.enums.TypeStage;
 import com.sbgs.backend_2026.service.DemandeStageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication; // ✅ UN SEUL IMPORT
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +27,7 @@ public class DemandeStageController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public DemandeStageResponse soumettre(
-            @RequestParam UUID stagiaireId,
+            Authentication authentication,  // ✅ AJOUTÉ - récupère l'utilisateur connecté
             @RequestParam UUID ecoleId,
             @RequestParam TypeStage typeStage,
             @RequestParam LocalDate dateDebutSouhaitee,
@@ -43,8 +40,11 @@ public class DemandeStageController {
             @RequestParam(required = false) MultipartFile demandeManuscrite
     ) throws IOException {
 
+        // ✅ Récupérer l'email du stagiaire connecté
+        String emailStagiaire = authentication.getName();
+
         DemandeStageCreateRequest request = new DemandeStageCreateRequest(
-                stagiaireId, ecoleId, typeStage, dateDebutSouhaitee, dureeSouhaitee);
+                ecoleId, typeStage, dateDebutSouhaitee, dureeSouhaitee);
 
         List<PieceJointe> pieces = new ArrayList<>();
         pieces.add(new PieceJointe(TypeDocument.CV, cv));
@@ -58,7 +58,8 @@ public class DemandeStageController {
             }
         }
 
-        return demandeStageService.soumettreDemande(request, pieces);
+        // ✅ Passer l'email au service
+        return demandeStageService.soumettreDemande(request, pieces, emailStagiaire);
     }
 
     @PatchMapping("/{id}/dossier")
@@ -74,12 +75,26 @@ public class DemandeStageController {
     }
 
     @GetMapping
-    public List<DemandeStageResponse> lister() {
-        return demandeStageService.lister();
+    public List<DemandeStageResponse> lister(Authentication authentication) {
+        boolean estStagiaire = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_STAGIAIRE"));
+        return estStagiaire
+                ? demandeStageService.listerPourStagiaire(authentication.getName())
+                : demandeStageService.lister();
     }
 
     @GetMapping("/{id}")
-    public DemandeStageResponse obtenir(@PathVariable UUID id) {
-        return demandeStageService.obtenir(id);
+    public DemandeStageResponse obtenir(@PathVariable UUID id, Authentication authentication) {
+        boolean estStagiaire = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_STAGIAIRE"));
+        return estStagiaire
+                ? demandeStageService.obtenirPourStagiaire(id, authentication.getName())
+                : demandeStageService.obtenir(id);
+    }
+
+    // DemandeStageController.java
+    @GetMapping("/derniere")
+    public DemandeStageResponse obtenirDerniereDemande(Authentication authentication) {
+        return demandeStageService.obtenirDerniereDemande(authentication.getName());
     }
 }

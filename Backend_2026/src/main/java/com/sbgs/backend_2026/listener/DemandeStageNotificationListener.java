@@ -1,9 +1,6 @@
 package com.sbgs.backend_2026.listener;
 
-import com.sbgs.backend_2026.event.DecisionRhRefuseeEvent;
-import com.sbgs.backend_2026.event.DossierAccepteEvent;
-import com.sbgs.backend_2026.event.DossierRejeteEvent;
-import com.sbgs.backend_2026.event.NewDemandeEvent;
+import com.sbgs.backend_2026.event.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -36,7 +33,7 @@ public class DemandeStageNotificationListener {
                 event.emailStagiaire(),
                 "Votre dossier de stage a été accepté",
                 "Bonjour " + event.prenomStagiaire() + ",\n\n" +
-                        "Votre dossier de candidature au stage a été validé par le responsable de stage. " +
+                        "Votre dossier de candidature au stage a été validé par le responsable de stage. " +"\n\n" +
                         "Il est maintenant transmis au directeur RH pour approbation finale."
         );
 
@@ -56,6 +53,18 @@ public class DemandeStageNotificationListener {
                 "Bonjour " + event.prenomStagiaire() + ",\n\n" +
                         "Votre dossier de candidature au stage a été rejeté par le responsable de stage, " +
                         "probablement en raison d'une pièce manquante ou pas bien visible." + ",\n" + "Contactez le service pour plus de détails."
+        );
+    }
+
+    @Async
+    @EventListener
+    public void onDecisionRhApprouvee(DecisionRhApprouveeEvent event) {
+        envoyerEmail(
+                event.emailStagiaire(),
+                "Votre stage a ete approuve par la direction",
+                "Bonjour " + event.prenomStagiaire() + ",\n\n" +
+                        "Votre demande de stage a ete définitivement approuvée par la direction des ressources humaines. " +"\n\n"+
+                        "Vous recevrez prochainement les informations relatives a votre affectation." + "\n\n" + "Si vous avez changé de décision pour passer le stage chez notre Societe, veillez contacter le responsable de stage." +"\n\n\n" + "Cordialement"
         );
     }
 

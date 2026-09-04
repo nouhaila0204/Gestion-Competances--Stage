@@ -54,15 +54,15 @@ public class DemandeStageService {
 
     @Transactional
     public DemandeStageResponse soumettreDemande(DemandeStageCreateRequest request,
-                                                 List<PieceJointe> pieces) throws IOException {
+                                                 List<PieceJointe> pieces, String emailStagiaire) throws IOException {
 
         Map<TypeDocument, Integer> manquantes = DossierChecklist.piecesManquantes(pieces);
         if (!manquantes.isEmpty()) {
             throw new DocumentManquantException(manquantes);
         }
 
-        Stagiaire stagiaire = stagiaireRepository.findById(request.stagiaireId())
-                .orElseThrow(() -> new IllegalArgumentException("Stagiaire introuvable : " + request.stagiaireId()));
+        Stagiaire stagiaire = stagiaireRepository.findByUtilisateur_Email(emailStagiaire)
+                .orElseThrow(() -> new IllegalArgumentException("Aucun profil stagiaire associe a ce compte"));
         Ecole ecole = ecoleRepository.findById(request.ecoleId())
                 .orElseThrow(() -> new IllegalArgumentException("Ecole introuvable : " + request.ecoleId()));
 
@@ -177,6 +177,38 @@ public class DemandeStageService {
                 .orElseThrow(() -> new IllegalArgumentException("Demande introuvable : " + id));
     }
 
+    @Transactional(readOnly = true)
+    public List<DemandeStageResponse> listerPourStagiaire(String email) {
+        List<DemandeStage> demandes = demandeStageRepository
+                .findAllByStagiaireEmailWithStage(email);
+
+        return demandes.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public DemandeStageResponse obtenirDerniereDemande(String email) {
+        List<DemandeStage> demandes = demandeStageRepository.findAllByStagiaireEmailWithStage(email);
+        if (demandes.isEmpty()) {
+            throw new IllegalArgumentException("Aucune demande trouvee pour ce compte");
+        }
+        return toResponse(demandes.get(0));
+    }
+
+    @Transactional(readOnly = true)
+    public DemandeStageResponse obtenirPourStagiaire(UUID id, String email) {
+        DemandeStage demande = demandeStageRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Demande introuvable : " + id));
+        if (!demande.getStagiaire().getUtilisateur().getEmail().equals(email)) {
+            // Message volontairement identique au cas "introuvable" -- ne jamais
+            // reveler qu'une demande existe mais appartient a quelqu'un d'autre.
+            throw new IllegalArgumentException("Demande introuvable : " + id);
+        }
+        return toResponse(demande);
+    }
+
+
     private DemandeStageResponse toResponse(DemandeStage d) {
         return new DemandeStageResponse(
                 d.getId(),
@@ -191,4 +223,7 @@ public class DemandeStageService {
                 d.getStage() != null ? d.getStage().getId() : null
         );
     }
+
+
+
 }
