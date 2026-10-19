@@ -5,7 +5,7 @@
 ![Java](https://img.shields.io/badge/Java-21-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1-brightgreen)
 ![MySQL](https://img.shields.io/badge/MySQL-8-blue)
-![Angular](https://img.shields.io/badge/Angular-%C3%A0%20venir-lightgrey)
+![Angular](https://img.shields.io/badge/Angular-lightgrey)
 ![Status](https://img.shields.io/badge/status-en%20d%C3%A9veloppement-yellow)
 
 
