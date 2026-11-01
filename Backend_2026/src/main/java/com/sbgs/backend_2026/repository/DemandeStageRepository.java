@@ -1,6 +1,7 @@
 package com.sbgs.backend_2026.repository;
 
 import com.sbgs.backend_2026.entity.DemandeStage;
+import com.sbgs.backend_2026.entity.enums.EtatDossier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +17,5 @@ public interface DemandeStageRepository extends JpaRepository<DemandeStage, UUID
             "WHERE u.email = :email " +
             "ORDER BY d.dateSoumission DESC")
     List<DemandeStage> findAllByStagiaireEmailWithStage(@Param("email") String email);
+    long countByEtatDossier(EtatDossier etatDossier);
 }

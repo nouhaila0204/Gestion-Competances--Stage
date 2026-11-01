@@ -33,6 +33,9 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .authorizeHttpRequests(auth -> auth
+                        // 1. AUTORISATION POUR ACTUATOR (MONITORING)
+                        .requestMatchers("/actuator/**").permitAll()
+
                         .requestMatchers("/api/auth/**", "/api/ecoles", "/api/candidatures").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/api/demandes").hasRole("STAGIAIRE")
@@ -79,6 +82,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/api/offres/***").hasRole("DIRECTEUR_RH")
 
+                        .requestMatchers(HttpMethod.GET, "/api/stats/**").hasRole("RESPONSABLE_STAGE")
 
                         .anyRequest().authenticated()
                 )
