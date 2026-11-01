@@ -1,0 +1,96 @@
+.evaluation-container {
+  padding: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.stage-selector {
+  margin-bottom: 1.5rem;
+  select {
+    margin-left: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    min-width: 250px;
+  }
+}
+
+.evaluation-table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid #e5e3dc;
+}
+
+.evaluation-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    text-align: left;
+    padding: 0.75rem 0.5rem;
+    background: #f7f6f2;
+    font-weight: 600;
+    font-size: 13px;
+    color: #333;
+  }
+
+  td {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+  }
+
+  .note-input {
+    width: 80px;
+    padding: 6px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+
+    &:focus {
+      outline: none;
+      border-color: #c30508;
+    }
+  }
+}
+
+.actions {
+  margin-top: 1.5rem;
+  text-align: right;
+}
+
+.btn-primary {
+  background: #c30508;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover:not(:disabled) {
+    background: #a00406;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.chargement {
+  text-align: center;
+  padding: 2rem 0;
+  color: #999;
+}

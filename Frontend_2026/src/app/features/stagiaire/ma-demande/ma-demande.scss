@@ -1,0 +1,145 @@
+.form-card, .suivi-card { max-width: 560px; background: #FFFFFF; border-radius: 12px; padding: 1.75rem; border: 1px solid #E5E3DC; }
+h1 { font-size: 20px; font-weight: 500; margin: 0 0 1rem; }
+.note { font-size: 13px; color: #666; margin: 0 0 1.25rem; }
+label { display: block; font-size: 13px; color: #666; margin: 1rem 0 6px; }
+input, select { width: 100%; height: 38px; padding: 0 10px; border: 1px solid #E0E0E0; border-radius: 6px; font-size: 14px; box-sizing: border-box; }
+input[type="file"] { height: auto; padding: 8px 10px; }
+button { margin-top: 1.5rem; width: 100%; height: 40px; background: #E4131C; color: #fff; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; &:disabled { opacity: 0.6; cursor: not-allowed; } }
+.statut-ligne { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #F0F0F0; }
+.label { color: #666; font-size: 13px; }
+.badge { font-size: 12px; padding: 3px 10px; border-radius: 20px; background: #F1EFE8; }
+.badge.acceptee, .badge.approuvee { background: #EAF3DE; color: #27500A; }
+.badge.rejetee { background: #FBE1E1; color: #791F1F; }
+.badge.nouvelle { background: #FAEEDA; color: #633806; }
+
+// ============================================
+// Styles existants (gardez-les)
+// ============================================
+
+// ... vos styles actuels ...
+
+// ============================================
+// ✅ NOUVEAUX STYLES - Statut des fichiers
+// ============================================
+
+.pieces-section {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #FAFAFA;
+  border-radius: 8px;
+  border: 1px solid #E5E3DC;
+
+  h3 {
+    font-size: 14px;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+}
+
+.file-group {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  background: #FFFFFF;
+  border: 1px solid #E5E3DC;
+  transition: border-color 0.3s;
+
+  &.erreur {
+    border-color: #C30508;
+    background: #FFF5F5;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .file-status {
+    display: block;
+    font-size: 12px;
+    margin-top: 4px;
+    color: #999;
+
+    &.valide {
+      color: #27500A;
+      font-weight: 500;
+    }
+  }
+}
+
+// ============================================
+// ✅ NOUVEAUX STYLES - Barre de progression
+// ============================================
+
+.progress-section {
+  margin: 1.5rem 0;
+
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #E5E3DC;
+    border-radius: 4px;
+    overflow: hidden;
+
+    .progress-fill {
+      height: 100%;
+      background: #E4131C;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+
+      &.complet {
+        background: #27500A;
+      }
+    }
+  }
+
+  .progress-text {
+    font-size: 13px;
+    color: #666;
+    margin-top: 6px;
+    text-align: center;
+  }
+}
+
+// ============================================
+// ✅ NOUVEAUX STYLES - Bouton de soumission
+// ============================================
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #CCCCCC;
+  color: #999;
+
+  &.actif {
+    background: #E4131C;
+    color: #FFFFFF;
+
+    &:hover:not(:disabled) {
+      background: #6D0B0B;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(195, 5, 8, 0.3);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}

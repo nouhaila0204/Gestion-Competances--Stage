@@ -1,0 +1,290 @@
+.stagiaires-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #F7F6F2;
+  min-height: 100vh;
+}
+
+// En-tête de page
+.page-header {
+  margin-bottom: 2rem;
+  h1 { font-size: 2rem; color: #1a1a1a; margin: 0; font-weight: 700; }
+  .subtitle { color: #666; font-size: 1rem; margin: 0.5rem 0 0; }
+}
+
+// Chargement
+.chargement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 0;
+  color: #888;
+
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #C30508;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  color: #999;
+  border: 1px dashed #ccc;
+}
+
+// Grille de cartes
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+// Carte Stagiaire
+.stagiaire-card {
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  border: 1px solid #E5E3DC;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  }
+}
+
+// En-tête de la carte
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0F0F0;
+
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #FCEBEB;
+    color: #C30508;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .header-info {
+    flex: 1;
+
+    .name {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .meta-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+
+      .tag {
+        font-size: 0.75rem;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-weight: 500;
+
+        &.type-tag { background: #EAF3DE; color: #27500A; }
+        &.school-tag { background: #F0F0F0; color: #555; }
+      }
+    }
+  }
+
+  .date-badge {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+
+    .date-label {
+      font-size: 0.75rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .date-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #C30508;
+      background: #FCEBEB;
+      padding: 4px 12px;
+      border-radius: 8px;
+      margin-top: 4px;
+    }
+  }
+}
+
+// Onglets
+.card-tabs {
+  display: flex;
+  background: #FAFAFA;
+  border-bottom: 1px solid #E5E3DC;
+
+  .tab-btn {
+    flex: 1;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #777;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+
+    &:hover { color: #C30508; background: #F5F5F5; }
+    &.active {
+      color: #C30508;
+      border-bottom-color: #C30508;
+      background: #FFFFFF;
+    }
+  }
+}
+
+// Contenu des onglets
+.tab-content {
+  padding: 1.5rem;
+  animation: fadeIn 0.3s ease-in-out;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+// Formulaire d'absence
+.absence-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  background: #F9F9F9;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #E5E3DC;
+  margin-bottom: 1rem;
+
+  .form-control {
+    padding: 0.5rem;
+    border: 1px solid #CCC;
+    border-radius: 6px;
+    font-size: 0.9rem;
+
+    &[type="date"] { width: 140px; }
+    &[type="text"] { flex: 1; min-width: 150px; }
+  }
+
+  .checkbox-group {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: #444;
+    label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+  }
+}
+
+// Liste des absences
+.absences-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .no-data { color: #999; font-style: italic; font-size: 0.9rem; }
+
+  .absence-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #FFF5F5;
+    border-left: 4px solid #C30508;
+    border-radius: 6px;
+    font-size: 0.9rem;
+
+    &.justifiee {
+      background: #F0FDF4;
+      border-left-color: #22C55E;
+    }
+
+    .abs-date { font-weight: 600; color: #333; width: 100px; }
+    .abs-motif { flex: 1; color: #555; }
+    .abs-status { font-size: 0.8rem; color: #777; }
+  }
+}
+
+// Onglet Rapport
+.rapport-depose {
+  background: #F0FDF4;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #BBF7D0;
+  text-align: center;
+
+  p { color: #166534; font-weight: 600; margin-bottom: 1rem; }
+  .link-rapport {
+    display: inline-block;
+    color: #C30508;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 8px 16px;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #C30508;
+    transition: all 0.2s;
+    &:hover { background: #C30508; color: white; }
+  }
+}
+
+.rapport-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .warning-text { color: #D97706; font-weight: 500; font-size: 0.9rem; margin: 0; }
+
+  .form-control {
+    padding: 0.75rem;
+    border: 1px solid #CCC;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+
+  .file-input {
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+  }
+}
+
+// Boutons
+.btn-primary {
+  background: #C30508;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  align-self: flex-start;
+
+  &:hover { background: #A00406; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}

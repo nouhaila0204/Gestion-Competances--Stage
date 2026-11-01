@@ -1,0 +1,61 @@
+<h1>Stages en cours</h1>
+
+@if (chargement) {
+  <div>Chargement...</div>
+} @else {
+  @for (s of stages; track s.id) {
+    <div class="stage-card">
+      <div class="stage-header">
+        <div>
+          <strong>{{ s.stagiaireNomComplet }}</strong>
+          <span style="margin-left: 1rem;">📅 Du {{ s.dateDebut }} au {{ s.dateFin || '(non défini)' }}</span>
+        </div>
+        <div class="actions">
+          <button class="btn-outline" (click)="ouvrirAffectation(s.id)">Affecter à un service</button>
+
+          @if (s.dateGenerationAttestation) {
+            <!-- ✅ Bouton pour télécharger l'attestation -->
+            <a [href]="apiUrl + '/stages/' + s.id + '/attestation'" target="_blank" class="btn-attestation">
+              📄 Télécharger attestation
+            </a>
+            <button class="btn-primary" disabled>✅ Attestation générée</button>
+          } @else {
+            <button class="btn-primary" (click)="valider(s.id)">Valider la fin de stage</button>
+          }
+        </div>
+      </div>
+
+      <!-- Détails supplémentaires -->
+      <div class="stage-details">
+        @if (s.rapportNomFichier) {
+          <span class="detail-item">
+            📄 <a [href]="apiUrl + '/stages/' + s.id + '/rapport'" target="_blank">Rapport : {{ s.rapportNomFichier }}</a>
+          </span>
+        } @else {
+          <span class="detail-item text-muted">📄 Aucun rapport</span>
+        }
+        <span class="detail-item">
+          📊 Absences : <span [ngClass]="{'text-danger': (s.nombreAbsences || 0) > 0}">{{ s.nombreAbsences || 0 }}</span>
+        </span>
+      </div>
+
+      <!-- Formulaire d'affectation -->
+      @if (stageEnEditionId === s.id) {
+        <form (ngSubmit)="affecter()" class="form-affectation">
+          <label>Service</label>
+          <select [(ngModel)]="serviceId" name="serviceId" required>
+            <option value="" disabled selected>Sélectionner un service</option>
+            @for (service of services; track service.id) {
+              <option [value]="service.id">{{ service.nom }}</option>
+            }
+          </select>
+          <label>Date de début</label>
+          <input type="date" [(ngModel)]="dateDebut" name="dateDebut" required />
+          <label>Date de fin</label>
+          <input type="date" [(ngModel)]="dateFin" name="dateFin" required />
+          <button type="submit" class="btn-primary">Confirmer l'affectation</button>
+        </form>
+      }
+    </div>
+  }
+}

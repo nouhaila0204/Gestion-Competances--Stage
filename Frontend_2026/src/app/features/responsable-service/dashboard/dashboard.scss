@@ -1,0 +1,126 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #F7F6F2;
+}
+
+// Sidebar gauche
+.sidebar {
+  width: 320px;
+  background: #FFFFFF;
+  border-right: 1px solid #E5E3DC;
+  display: flex;
+  flex-direction: column;
+
+  .sidebar-header {
+    padding: 1.5rem;
+    background: #C30508;
+    color: white;
+
+    h2 { margin: 0; font-size: 1.2rem; font-weight: 600; }
+    p { margin: 0.25rem 0 0; font-size: 0.85rem; opacity: 0.9; }
+  }
+
+  .loading, .empty {
+    padding: 2rem;
+    text-align: center;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  .stagiaire-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+
+    .stagiaire-item {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #F0F0F0;
+      transition: background 0.2s;
+
+      &:hover { background: #F9F9F9; }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0.5rem;
+
+        .name { font-weight: 600; color: #111; font-size: 0.95rem; }
+        .dates { font-size: 0.8rem; color: #666; }
+      }
+
+      .badges {
+        display: flex;
+        gap: 0.5rem;
+
+        .badge {
+          font-size: 0.7rem;
+          padding: 2px 8px;
+          border-radius: 12px;
+          font-weight: 600;
+
+          &.danger { background: #FBE1E1; color: #791F1F; }
+          &.warning { background: #FAEEDA; color: #633806; }
+        }
+      }
+    }
+  }
+}
+
+// Zone principale
+.main-content {
+  flex: 1;
+  padding: 2rem;
+
+  h1 { margin: 0; font-size: 1.8rem; color: #111; }
+  .subtitle { color: #666; margin-bottom: 2rem; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: #FFF;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #E5E3DC;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+
+    &.warning { border-left: 4px solid #F59E0B; }
+    &.danger { border-left: 4px solid #C30508; }
+
+    .stat-icon { font-size: 2.5rem; }
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+
+      .stat-value { font-size: 2rem; font-weight: 700; color: #111; line-height: 1; }
+      .stat-label { font-size: 0.85rem; color: #666; margin-top: 0.25rem; }
+    }
+  }
+
+  .actions-box {
+    text-align: center;
+    margin-top: 3rem;
+
+    .btn-primary {
+      display: inline-block;
+      background: #C30508;
+      color: white;
+      padding: 12px 32px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.3s;
+
+      &:hover { background: #6D0B0B; }
+    }
+  }
+}

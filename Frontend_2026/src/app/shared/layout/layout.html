@@ -1,0 +1,22 @@
+<div class="app-shell">
+  <header class="app-header">
+    <div class="logo-block">
+      <p class="logo">SBGS</p>
+    </div>
+    <nav class="nav-items">
+      @for (item of navItems; track item.route) {
+        <a [routerLink]="item.route" routerLinkActive="active" class="nav-link">
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+    <div class="header-right">
+      <!-- ✅ Lien Profil -->
+      <a routerLink="/{{ getCurrentRole() }}/profil" class="profile-link">👤 Profil</a>
+      <button class="avatar" (click)="seDeconnecter()" title="Se déconnecter">{{ initiales() }}</button>
+    </div>
+  </header>
+  <main class="app-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,56 @@
+.dashboard-stagiaire {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.demande-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #E5E3DC;
+
+  h2 { margin: 0 0 1.25rem; font-size: 1.2rem; }
+
+  .info-ligne {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #F0F0F0;
+
+    .label { color: #666; font-weight: 500; }
+  }
+
+  .badge {
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+
+    &.nouvelle { background: #FAEEDA; color: #633806; }
+    &.acceptee { background: #EAF3DE; color: #27500A; }
+    &.rejetee { background: #FBE1E1; color: #791F1F; }
+    &.approuvee { background: #EAF3DE; color: #27500A; }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px dashed #E0E0E0;
+
+  p { font-size: 1.1rem; color: #666; margin-bottom: 1.5rem; }
+}
+
+.btn-primary {
+  display: inline-block;
+  background: #C30508;
+  color: #fff;
+  padding: 12px 28px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s;
+
+  &:hover { background: #6D0B0B; }
+}

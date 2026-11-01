@@ -1,0 +1,47 @@
+<div class="dashboard-stagiaire">
+  <!-- ✅ Debug temporaire -->
+  <p style="display:none;">chargement={{ chargement }}, demande={{ demande ? 'oui' : 'non' }}</p>
+
+  <div *ngIf="chargement; else content">
+    <p>Chargement de votre demande...</p>
+  </div>
+
+  <ng-template #content>
+    <div *ngIf="demande; else empty">
+      <div class="demande-card">
+        <h2>📋 Ma demande actuelle</h2>
+        <div class="info-ligne">
+          <span class="label">Type de stage</span>
+          <span>{{ demande.typeStage }}</span>
+        </div>
+        <div class="info-ligne">
+          <span class="label">Date de début souhaitée</span>
+          <span>{{ demande.dateDebutSouhaitee }}</span>
+        </div>
+        <div class="info-ligne">
+          <span class="label">État du dossier</span>
+          <span class="badge" [ngClass]="demande.etatDossier.toLowerCase()">
+            {{ libelleEtat(demande.etatDossier) }}
+          </span>
+        </div>
+        <div class="info-ligne">
+          <span class="label">Décision RH</span>
+          <span class="badge" [ngClass]="demande.decisionRh.toLowerCase()">
+            {{ libelleDecision(demande.decisionRh) }}
+          </span>
+        </div>
+        <div *ngIf="demande.stageId" class="info-ligne">
+          <span class="label">Stage créé</span>
+          <span class="badge success">✅ Oui</span>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #empty>
+      <div class="empty-state">
+        <p>Vous n'avez pas encore de demande de stage.</p>
+        <a routerLink="/stagiaire/nouvelle" class="btn-primary">➕ Déposer une demande</a>
+      </div>
+    </ng-template>
+  </ng-template>
+</div>

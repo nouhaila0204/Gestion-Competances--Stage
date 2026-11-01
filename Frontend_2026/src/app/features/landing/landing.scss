@@ -1,0 +1,394 @@
+// ============================================
+// Conteneur principal
+// ============================================
+.landing-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// ============================================
+// HEADER
+// ============================================
+.landing-header {
+  padding: 0.75rem 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #E5E3DC;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo-block {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .logo-image {
+      height: 45px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+
+      .logo-name {
+        font-size: 20px;
+        font-weight: 700;
+        color: #C30508;
+        letter-spacing: 0.5px;
+      }
+
+      .logo-sub {
+        font-size: 10px;
+        color: #666;
+        font-weight: 400;
+      }
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .user-greeting {
+      font-size: 14px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .btn-dashboard {
+      padding: 8px 20px;
+      background: #C30508;
+      color: #FFFFFF;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.3s;
+
+      &:hover {
+        background: #6D0B0B;
+      }
+    }
+  }
+}
+
+// ============================================
+// HERO SECTION (avec fond bouteille floue)
+// ============================================
+.hero-section {
+  position: relative;
+  min-height: 100vh; // ✅ occupe toute la hauteur
+  display: flex;
+  align-items: center;
+  padding: 3rem 2rem;
+  overflow: hidden;
+  background: #F7F6F2;
+
+  .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+
+    .bg-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(6px) brightness(0.85);
+      transform: scale(1.05);
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 2.5rem 3rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+
+      .highlight {
+        color: #C30508;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: #444;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+// ============================================
+// BOUTONS
+// ============================================
+.btn-primary,
+.btn-outline {
+  padding: 12px 32px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary {
+  background: #C30508;
+  color: #FFFFFF;
+
+  &:hover {
+    background: #6D0B0B;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(195, 5, 8, 0.3);
+  }
+}
+
+.btn-outline {
+  background: transparent;
+  color: #C30508;
+  border: 2px solid #C30508;
+
+  &:hover {
+    background: #C30508;
+    color: #FFFFFF;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-large {
+  padding: 14px 40px;
+  font-size: 18px;
+}
+
+// ============================================
+// BANNIÈRE CONNECTÉ
+// ============================================
+.info-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #EAF3DE;
+  border-radius: 12px;
+  border: 1px solid #B8D4A0;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+
+  span {
+    font-size: 14px;
+    color: #27500A;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  .btn-banner {
+    padding: 6px 16px;
+    background: #27500A;
+    color: #FFFFFF;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background 0.3s;
+
+    &:hover {
+      background: #1A3A06;
+    }
+  }
+}
+
+// ============================================
+// BENEFITS
+// ============================================
+.benefits-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background: #F7F6F2;
+
+  h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #111;
+    margin-bottom: 2rem;
+
+    .highlight {
+      color: #C30508;
+    }
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+
+  .benefit-card {
+    background: #FFFFFF;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #E5E3DC;
+    transition: transform 0.3s, box-shadow 0.3s;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .benefit-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      color: #111;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.5;
+    }
+  }
+}
+
+// ============================================
+// FOOTER
+// ============================================
+.landing-footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid #E5E3DC;
+  background: #FFFFFF;
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  p {
+    color: #999;
+    font-size: 12px;
+    margin: 0;
+
+    &.footer-dev {
+      color: #CCC;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+  }
+}
+
+// ============================================
+// RESPONSIVE
+// ============================================
+@media (max-width: 768px) {
+  .landing-header {
+    padding: 0.5rem 1rem;
+
+    .logo-block {
+      .logo-image {
+        height: 35px;
+      }
+      .logo-text {
+        .logo-name {
+          font-size: 16px;
+        }
+        .logo-sub {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .hero-section {
+    padding: 2rem 1rem;
+    min-height: 60vh;
+
+    .hero-content {
+      padding: 1.5rem;
+      width: 100%;
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+
+        a {
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .benefits-section {
+    padding: 2rem 1rem;
+
+    .benefits-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .benefits-section .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-large {
+    padding: 12px 24px;
+    font-size: 16px;
+  }
+
+  .info-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+}

@@ -1,0 +1,48 @@
+.historique-container {
+  max-width: 820px;
+  margin: 0 auto;
+
+  h2 { font-size: 1.3rem; margin-bottom: 1.25rem; }
+}
+
+.table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #E5E3DC;
+  overflow-x: auto;
+  padding: 0.5rem 0;
+}
+
+.table-historique {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: #F7F6F2;
+    color: #333;
+    font-weight: 600;
+    border-bottom: 1px solid #E5E3DC;
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #F0F0F0;
+  }
+
+  tr:last-child td { border-bottom: none; }
+}
+
+.badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  display: inline-block;
+
+  &.nouvelle { background: #FAEEDA; color: #633806; }
+  &.acceptee { background: #EAF3DE; color: #27500A; }
+  &.rejetee { background: #FBE1E1; color: #791F1F; }
+  &.approuvee { background: #EAF3DE; color: #27500A; }
+}

@@ -1,0 +1,37 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-header">
+      <p class="logo">SBGS</p>
+      <p class="tagline">Société des Boissons Gazeuses du Souss</p>
+    </div>
+    <div class="login-body">
+      <h1>Gestion des Stages</h1>
+      <p class="subtitle">Connectez-vous à votre espace</p>
+      <form (ngSubmit)="seConnecter()">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          placeholder="nom@entreprise.ma"
+          required
+        />
+
+        <label for="password">Mot de passe</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="••••••••"
+          required
+        />
+
+        <button type="submit" [disabled]="chargement">
+          {{ chargement ? 'Connexion...' : 'Se connecter' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

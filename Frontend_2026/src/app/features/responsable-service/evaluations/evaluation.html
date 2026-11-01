@@ -1,0 +1,72 @@
+<div class="evaluation-container">
+  <h1>Évaluation des stagiaires</h1>
+
+  <!-- Sélecteur de stage -->
+  <div class="stage-selector">
+    <label for="stageSelect">Sélectionner un stage :</label>
+    <select id="stageSelect" [(ngModel)]="selectedStageId" (ngModelChange)="onStageChangeModel($event)">
+      <option [ngValue]="null">-- Choisir un stage --</option>
+      <option *ngFor="let s of stages" [ngValue]="s.id">
+        {{ s.stagiaireNomComplet }} - {{ s.dateDebut }} ({{ s.typeStage || 'N/A' }})
+      </option>
+    </select>
+  </div>
+
+  <!-- Chargement des critères -->
+  @if (chargementCriteres) {
+    <div class="chargement">⏳ Chargement des critères...</div>
+  }
+
+  <!-- Affichage des critères -->
+  @if (!chargementCriteres && selectedStageId && criteres.length > 0) {
+    <div class="evaluation-table-wrapper">
+      <table class="evaluation-table">
+        <thead>
+        <tr>
+          <th>Compétence / Critère</th>
+          <th>Catégorie</th>
+          <th>Note (0-20)</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (critere of criteres; track critere.id) {
+            <tr>
+              <td>{{ critere.nom }}</td>
+              <td>{{ critere.categorie || 'Non définie' }}</td>
+              <td>
+                <input
+                  type="number"
+                  min="0"
+                  max="20"
+                  step="0.5"
+                  [(ngModel)]="notes[critere.id]"
+                  placeholder="Note"
+                  class="note-input"
+                />
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <div class="actions">
+        <button
+          class="btn-primary"
+          (click)="soumettreEvaluations()"
+          [disabled]="envoiEnCours || !selectedStageId"
+        >
+          {{ envoiEnCours ? '⏳ Envoi en cours...' : '💾 Enregistrer les évaluations' }}
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Aucun critère -->
+  @if (!chargementCriteres && selectedStageId && criteres.length === 0) {
+    <p>Aucun critère d'évaluation trouvé.</p>
+  }
+
+  <!-- Aucun stage -->
+  @if (!chargementCriteres && stages.length === 0) {
+    <p>Aucun stage disponible pour ce responsable.</p>
+  }
+</div>

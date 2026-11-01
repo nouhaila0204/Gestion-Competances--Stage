@@ -1,0 +1,32 @@
+<div class="historique-container">
+  <h2>📜 Historique des demandes</h2>
+
+  @if (chargement) {
+    <p>Chargement...</p>
+  } @else if (demandes.length === 0) {
+    <p>Aucune demande trouvée.</p>
+  } @else {
+    <div class="table-wrapper">
+      <table class="table-historique">
+        <thead>
+        <tr>
+          <th>Type</th>
+          <th>Date de début</th>
+          <th>État dossier</th>
+          <th>Décision RH</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (d of demandes; track d.id) {
+            <tr>
+              <td>{{ d.typeStage }}</td>
+              <td>{{ d.dateDebutSouhaitee }}</td>
+              <td><span class="badge" [ngClass]="d.etatDossier.toLowerCase()">{{ libelleEtat(d.etatDossier) }}</span></td>
+              <td><span class="badge" [ngClass]="d.decisionRh.toLowerCase()">{{ libelleDecision(d.decisionRh) }}</span></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

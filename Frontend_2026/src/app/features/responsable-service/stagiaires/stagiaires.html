@@ -1,0 +1,109 @@
+<div class="stagiaires-container">
+  <div class="page-header">
+    <h1>👥 Mes stagiaires</h1>
+    <p class="subtitle">Gérez les absences et les rapports de vos stagiaires</p>
+  </div>
+
+  @if (chargement) {
+    <div class="chargement">
+      <div class="spinner"></div>
+      <p>Chargement des stagiaires...</p>
+    </div>
+  } @else if (stagiairesData.length === 0) {
+    <div class="empty-state">
+      <p>Aucun stagiaire n'est actuellement affecté à votre service.</p>
+    </div>
+  } @else {
+    <div class="cards-grid">
+      @for (s of stagiairesData; track s.stageId) {
+        <div class="stagiaire-card">
+
+          <!-- En-tête de la carte -->
+          <div class="card-header">
+            <div class="avatar">{{ s.stagiaireNomComplet.charAt(0) }}</div>
+            <div class="header-info">
+              <h2 class="name">{{ s.stagiaireNomComplet }}</h2>
+              <div class="meta-tags">
+                <span class="tag type-tag">🎓 {{ s.typeStage }}</span>
+              </div>
+            </div>
+            <div class="date-badge">
+              <span class="date-label">Période</span>
+              <span class="date-value">{{ s.dateDebut }} ➔ {{ s.dateFin || '...' }}</span>
+            </div>
+          </div>
+
+          <!-- Navigation par onglets -->
+          <div class="card-tabs">
+            <button
+              class="tab-btn"
+              [class.active]="activeTab[s.stageId] === 'absences'"
+              (click)="activeTab[s.stageId] = 'absences'">
+              📅 Absences ({{ s.absences.length }})
+            </button>
+            <button
+              class="tab-btn"
+              [class.active]="activeTab[s.stageId] === 'rapport'"
+              (click)="activeTab[s.stageId] = 'rapport'">
+              📄 Rapport
+            </button>
+          </div>
+
+          <!-- Contenu : Onglet Absences -->
+          @if (activeTab[s.stageId] === 'absences') {
+            <div class="tab-content">
+              <div class="absence-form-row">
+                <input type="date" [(ngModel)]="s.absenceDate" placeholder="Date" class="form-control" />
+                <input type="text" [(ngModel)]="s.absenceMotif" placeholder="Motif (ex: maladie)" class="form-control" />
+                <div class="checkbox-group">
+                  <label><input type="checkbox" [(ngModel)]="s.absenceJustifiee" /> Justifiée</label>
+                  <label><input type="checkbox" [(ngModel)]="s.absenceRetard" /> Retard</label>
+                </div>
+                <button class="btn-primary" (click)="marquerAbsence(s)">Ajouter</button>
+              </div>
+
+              <div class="absences-list">
+                @if (s.absences.length === 0) {
+                  <p class="no-data">Aucune absence enregistrée.</p>
+                } @else {
+                  @for (abs of s.absences; track abs.id) {
+                    <div class="absence-item" [ngClass]="{'justifiee': abs.justifiee, 'retard': abs.retard}">
+                      <span class="abs-date">{{ abs.date }}</span>
+                      <span class="abs-motif">{{ abs.motif }}</span>
+                      <span class="abs-status">
+                        {{ abs.justifiee ? '✅ Justifiée' : '❌ Non justifiée' }}
+                        {{ abs.retard ? '⏱️ Retard' : '' }}
+                      </span>
+                    </div>
+                  }
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Contenu : Onglet Rapport -->
+          @if (activeTab[s.stageId] === 'rapport') {
+            <div class="tab-content">
+              @if (s.rapportNomFichier) {
+                <div class="rapport-depose">
+                  <p>✅ Rapport déjà déposé</p>
+                  <a [href]="apiUrl + '/stages/' + s.stageId + '/rapport'" target="_blank" class="link-rapport">
+                    📄 Consulter le rapport ({{ s.rapportNomFichier }})
+                  </a>
+                </div>
+              } @else {
+                <div class="rapport-form">
+                  <p class="warning-text">⚠️ Aucun rapport n'a été déposé pour ce stagiaire.</p>
+                  <input type="text" [(ngModel)]="s.themeStage" placeholder="Thème du stage" class="form-control" />
+                  <input type="file" (change)="onRapportFileChange(s, $event)" accept="application/pdf" class="file-input" />
+                  <button class="btn-primary" (click)="deposerRapport(s, s.rapportFile)">📤 Déposer le rapport</button>
+                </div>
+              }
+            </div>
+          }
+
+        </div>
+      }
+    </div>
+  }
+</div>

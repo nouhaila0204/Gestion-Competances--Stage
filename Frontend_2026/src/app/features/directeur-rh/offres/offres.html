@@ -1,0 +1,123 @@
+<div class="header-ligne">
+  <h1>💼 Offres d'emploi</h1>
+  <button class="btn-primary" (click)="afficherFormulaire = !afficherFormulaire">
+    {{ afficherFormulaire ? 'Annuler' : '+ Nouvelle offre' }}
+  </button>
+</div>
+
+<!-- Formulaire de création -->
+@if (afficherFormulaire) {
+  <form (ngSubmit)="creer()" class="form-offre">
+    <label>Titre *</label>
+    <input type="text" [(ngModel)]="titre" name="titre" required />
+
+    <label>Description *</label>
+    <input type="text" [(ngModel)]="description" name="description" required />
+
+    <label>Date de publication *</label>
+    <input type="date" [(ngModel)]="datePublication" name="datePublication" required />
+
+    <label>Compétences requises</label>
+    @for (c of competencesRequises; track c; let i = $index) {
+      <div class="ligne-competence">
+        <select [(ngModel)]="c.competenceId" [name]="'competenceId' + i" required>
+          <option value="" disabled selected>Compétence</option>
+          @for (comp of competencesDisponibles; track comp.id) {
+            <option [value]="comp.id">{{ comp.nom }} ({{ comp.categorie }})</option>
+          }
+        </select>
+        <select [(ngModel)]="c.niveauRequis" [name]="'niveau' + i">
+          <option value="DEBUTANT">Débutant</option>
+          <option value="INTERMEDIAIRE">Intermédiaire</option>
+          <option value="AVANCE">Avancé</option>
+          <option value="EXPERT">Expert</option>
+        </select>
+        <button type="button" class="btn-icon" (click)="retirerCompetence(i)">✕</button>
+      </div>
+    }
+
+    <button type="button" class="btn-outline" (click)="ajouterCompetence()">+ Ajouter une compétence</button>
+    <button type="submit" class="btn-primary">Créer l'offre</button>
+  </form>
+}
+
+<!-- Liste des offres -->
+@if (chargement) {
+  <div class="chargement">⏳ Chargement des offres...</div>
+} @else {
+  @for (o of offres; track o.id) {
+    <div class="offre-card">
+      <div class="offre-header">
+        <div class="offre-infos">
+          <p class="offre-titre">{{ o.titre }}</p>
+          <p class="offre-competences">Compétences : {{ o.competencesRequisesLibelle.join(', ') }}</p>
+          <span class="offre-statut">{{ o.statut }}</span>
+        </div>
+        <button class="btn-outline" (click)="voirMatching(o.id)">🔍 Voir le matching</button>
+      </div>
+
+      <!-- Matching -->
+      @if (offreSelectionneeId === o.id && resultatMatching) {
+        <div class="matching-resultat">
+          <!-- Employés -->
+          <p class="sous-titre">👨‍💼 Employés</p>
+          @if (resultatMatching.employes.length === 0) {
+            <p class="vide">Aucun employé pertinent.</p>
+          } @else {
+            @for (c of resultatMatching.employes; track c.id) {
+              <div class="candidat-ligne">
+                <span class="candidat-nom">{{ c.nomComplet }}</span>
+                <div class="candidat-details">
+                  <span class="score">{{ c.scoreTechnique }}%</span>
+                  <span class="competences">
+                    <span class="couvertes">✅ {{ c.competencesCouvertes.length }}</span>
+                    <span class="manquantes">❌ {{ c.competencesManquantes.length }}</span>
+                  </span>
+                  <button class="btn-detail" (click)="toggleDetail(c.id, 'employe')">📄 Détails</button>
+                </div>
+              </div>
+              <!-- Détails du candidat (affiché si sélectionné) -->
+              @if (detailCandidatId === c.id && detailCandidatType === 'employe') {
+                <div class="candidat-detail">
+                  <p><strong>Compétences couvertes :</strong> {{ c.competencesCouvertes.join(', ') || 'Aucune' }}</p>
+                  <p><strong>Compétences manquantes :</strong> {{ c.competencesManquantes.join(', ') || 'Aucune' }}</p>
+                  <p><strong>Possède des compétences non notées :</strong> {{ c.possedeCompetencesNonNotees ? 'Oui' : 'Non' }}</p>
+                  <button class="btn-fermer-detail" (click)="fermerDetail()">Fermer</button>
+                </div>
+              }
+            }
+          }
+
+          <!-- Anciens stagiaires -->
+          <p class="sous-titre">🎓 Anciens stagiaires</p>
+          @if (resultatMatching.stagiaires.length === 0) {
+            <p class="vide">Aucun stagiaire pertinent.</p>
+          } @else {
+            @for (c of resultatMatching.stagiaires; track c.id) {
+              <div class="candidat-ligne">
+                <span class="candidat-nom">{{ c.nomComplet }}</span>
+                <div class="candidat-details">
+                  <span class="score">{{ c.scoreTechnique }}%</span>
+                  <span class="competences">
+                    <span class="couvertes">✅ {{ c.competencesCouvertes.length }}</span>
+                    <span class="manquantes">❌ {{ c.competencesManquantes.length }}</span>
+                  </span>
+                  <button class="btn-detail" (click)="toggleDetail(c.id, 'stagiaire')">📄 Détails</button>
+                </div>
+              </div>
+              <!-- Détails du candidat -->
+              @if (detailCandidatId === c.id && detailCandidatType === 'stagiaire') {
+                <div class="candidat-detail">
+                  <p><strong>Compétences couvertes :</strong> {{ c.competencesCouvertes.join(', ') || 'Aucune' }}</p>
+                  <p><strong>Compétences manquantes :</strong> {{ c.competencesManquantes.join(', ') || 'Aucune' }}</p>
+                  <p><strong>Possède des compétences non notées :</strong> {{ c.possedeCompetencesNonNotees ? 'Oui' : 'Non' }}</p>
+                  <button class="btn-fermer-detail" (click)="fermerDetail()">Fermer</button>
+                </div>
+              }
+            }
+          }
+        </div>
+      }
+    </div>
+  }
+}

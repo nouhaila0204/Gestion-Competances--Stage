@@ -1,0 +1,64 @@
+<h1>Demandes de stage</h1>
+
+@if (chargement) {
+  <div>Chargement...</div>
+} @else {
+  <table class="tableau">
+    <thead>
+    <tr>
+      <th>Stagiaire</th>
+      <th>Type</th>
+      <th>Dossier</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (d of demandes; track d.id) {
+        <tr>
+          <td>{{ d.stagiaireNomComplet }}</td>
+          <td>{{ d.typeStage }}</td>
+          <td>
+            <span class="badge" [ngClass]="d.etatDossier.toLowerCase()">{{ d.etatDossier }}</span>
+          </td>
+          <td>
+            <!-- ✅ Bouton pour voir les pièces -->
+            <button class="btn-doc" (click)="voirDocuments(d.id)">📎 Voir pièces</button>
+
+            @if (d.etatDossier === 'NOUVELLE') {
+              <button class="btn-accept" (click)="traiter(d.id, 'ACCEPTEE')">✅ Accepter</button>
+              <button class="btn-reject" (click)="traiter(d.id, 'REJETEE')">❌ Rejeter</button>
+            } @else {
+              <span class="deja-traite">Déjà traité</span>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+<!-- ✅ MODAL POUR AFFICHER LES PIÈCES -->
+@if (afficherDocuments) {
+  <div class="modal-overlay" (click)="fermerDocuments()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>📎 Pièces jointes</h3>
+      @if (documents.length === 0) {
+        <p>Aucun document trouvé.</p>
+      } @else {
+        <ul>
+          @for (doc of documents; track doc.id) {
+            <li>
+              <span>{{ doc.typeDocument }}</span>
+              @if (doc.present) {
+                <a [href]="apiUrl + '/documents/' + doc.id + '/fichier'" target="_blank">📄 {{ doc.nomFichier }}</a>
+              } @else {
+                <span class="text-muted">❌ Non fourni</span>
+              }
+            </li>
+          }
+        </ul>
+      }
+      <button class="btn-close" (click)="fermerDocuments()">Fermer</button>
+    </div>
+  </div>
+}

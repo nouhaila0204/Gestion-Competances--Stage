@@ -1,0 +1,172 @@
+<!-- ✅ SUIVI D'UNE DEMANDE EXISTANTE -->
+@if (demande) {
+  <div class="suivi-card">
+    <h1>📋 Ma demande de stage</h1>
+
+    <div class="statut-ligne">
+      <span class="label">État du dossier</span>
+      <span class="badge" [ngClass]="demande.etatDossier.toLowerCase()">
+        {{ libelleEtat(demande.etatDossier) }}
+      </span>
+    </div>
+
+    <div class="statut-ligne">
+      <span class="label">Décision RH</span>
+      <span class="badge" [ngClass]="demande.decisionRh.toLowerCase()">
+        {{ demande.decisionRh === 'REJETEE' ? '⏳ En attente' : demande.decisionRh }}
+      </span>
+    </div>
+
+    <div class="statut-ligne">
+      <span class="label">Type de stage</span>
+      <span>{{ demande.typeStage }}</span>
+    </div>
+
+    @if (demande.stageId) {
+      <div class="statut-ligne">
+        <span class="label">Stage créé</span>
+        <span class="badge succes">✅ Stage approuvé</span>
+      </div>
+    }
+  </div>
+}
+
+<!-- ✅ FORMULAIRE DE DEMANDE -->
+@if (!demande) {
+  <div class="form-card">
+    <h1>📝 Déposer une demande de stage</h1>
+    <p class="note">Les 6 pièces suivantes sont obligatoires (dont 2 photos).</p>
+
+    <form (ngSubmit)="soumettre()">
+      <!-- École -->
+      <label>École *</label>
+      <select [(ngModel)]="ecoleId" name="ecoleId" required>
+        <option value="" disabled selected>Sélectionner votre école</option>
+        @for (e of ecoles; track e.id) {
+          <option [value]="e.id">{{ e.nom }} — {{ e.ville }}</option>
+        }
+      </select>
+
+      <!-- Type de stage -->
+      <label>Type de stage *</label>
+      <select [(ngModel)]="typeStage" name="typeStage">
+        <option value="PFA">PFA (Projet de Fin d'Année)</option>
+        <option value="PFE">PFE (Projet de Fin d'Études)</option>
+        <option value="OBSERVATION">Observation</option>
+        <option value="APPLICATION">Application</option>
+      </select>
+
+      <!-- Date début -->
+      <label>Date de début souhaitée *</label>
+      <input type="date" [(ngModel)]="dateDebutSouhaitee" name="dateDebutSouhaitee" required />
+
+      <!-- Durée -->
+      <label>Durée souhaitée *</label>
+      <input type="text" [(ngModel)]="dureeSouhaitee" name="dureeSouhaitee" placeholder="ex. 2 mois" required />
+
+      <!-- ✅ PIÈCES JOINTES AVEC STATUT -->
+      <div class="pieces-section">
+        <h3>📎 Pièces jointes</h3>
+
+        <!-- CV -->
+        <div class="file-group" [class.erreur]="cv === null && verification">
+          <label>CV (PDF) *</label>
+          <input type="file" (change)="onFichierUnique($event, 'cv')" accept="application/pdf" />
+          <span class="file-status" [class.valide]="cv !== null">
+            @if (cv) { ✅ {{ cv.name }} ({{ (cv.size / 1024).toFixed(1) }} KB) }
+            @else { ⚠️ Fichier requis }
+          </span>
+        </div>
+
+        <!-- CNI -->
+        <div class="file-group" [class.erreur]="cni === null && verification">
+          <label>CNI (PDF) *</label>
+          <input type="file" (change)="onFichierUnique($event, 'cni')" accept="application/pdf" />
+          <span class="file-status" [class.valide]="cni !== null">
+            @if (cni) { ✅ {{ cni.name }} ({{ (cni.size / 1024).toFixed(1) }} KB) }
+            @else { ⚠️ Fichier requis }
+          </span>
+        </div>
+
+        <!-- Attestation d'assurance -->
+        <div class="file-group" [class.erreur]="attestationAssurance === null && verification">
+          <label>Attestation d'assurance (PDF) *</label>
+          <input type="file" (change)="onFichierUnique($event, 'attestationAssurance')" accept="application/pdf" />
+          <span class="file-status" [class.valide]="attestationAssurance !== null">
+            @if (attestationAssurance) { ✅ {{ attestationAssurance.name }} }
+            @else { ⚠️ Fichier requis }
+          </span>
+        </div>
+
+        <!-- Convention de stage -->
+        <div class="file-group" [class.erreur]="conventionStage === null && verification">
+          <label>Convention de stage (PDF) *</label>
+          <input type="file" (change)="onFichierUnique($event, 'conventionStage')" accept="application/pdf" />
+          <span class="file-status" [class.valide]="conventionStage !== null">
+            @if (conventionStage) { ✅ {{ conventionStage.name }} }
+            @else { ⚠️ Fichier requis }
+          </span>
+        </div>
+
+        <!-- Demande manuscrite -->
+        <div class="file-group" [class.erreur]="demandeManuscrite === null && verification">
+          <label>Demande manuscrite (PDF) *</label>
+          <input type="file" (change)="onFichierUnique($event, 'demandeManuscrite')" accept="application/pdf" />
+          <span class="file-status" [class.valide]="demandeManuscrite !== null">
+            @if (demandeManuscrite) { ✅ {{ demandeManuscrite.name }} }
+            @else { ⚠️ Fichier requis }
+          </span>
+        </div>
+
+        <!-- Photos -->
+        <div class="file-group" [class.erreur]="photos.length < 1 && verification">
+          <label>Photos (1 requise) *</label>
+          <input type="file" (change)="onPhotos($event)" accept="image/*" multiple />
+          <span class="file-status" [class.valide]="photos.length >= 1">
+            @if (photos.length > 0) {
+              ✅ {{ photos.length }} photo(s) sélectionnée(s)
+              @if (photos.length < 1) { ({{ photos.length }}/1) }
+            }
+            @else { ⚠️ 1 photo requise }
+          </span>
+        </div>
+      </div>
+
+      <!-- ✅ INDICATEUR DE PROGRÈS -->
+      <div class="progress-section">
+        <div class="progress-bar">
+          <div
+            class="progress-fill"
+            [style.width.%]="verification ? (5 - nombreManquants) / 5 * 100 : 0"
+            [class.complet]="estComplet"
+          ></div>
+        </div>
+        <p class="progress-text">
+          @if (!verification) {
+            📤 Sélectionnez vos fichiers...
+          } @else if (estComplet) {
+            ✅ Toutes les pièces sont complètes !
+          } @else {
+            ⚠️ {{ nombreManquants }} pièce(s) manquante(s) sur 6
+          }
+        </p>
+      </div>
+
+      <!-- ✅ BOUTON SOUMISSION -->
+      <button
+        type="submit"
+        [disabled]="soumission || !estComplet"
+        class="btn-submit"
+        [class.actif]="estComplet"
+      >
+        @if (soumission) {
+          ⏳ Envoi en cours...
+        } @else if (estComplet) {
+          📤 Soumettre ma demande
+        } @else {
+          🔒 Compléter les pièces ({{ 6 - nombreManquants }}/6)
+        }
+      </button>
+    </form>
+  </div>
+}

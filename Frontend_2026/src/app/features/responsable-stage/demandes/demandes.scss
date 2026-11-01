@@ -1,0 +1,49 @@
+h1 { font-size: 20px; font-weight: 500; margin: 0 0 1.25rem; }
+.tableau { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; }
+th { text-align: left; font-size: 13px; color: #666; padding: 10px 14px; border-bottom: 1px solid #E5E3DC; }
+td { padding: 12px 14px; font-size: 14px; border-bottom: 1px solid #F0F0F0; }
+.badge { font-size: 12px; padding: 3px 10px; border-radius: 20px; background: #F1EFE8; }
+.badge.acceptee { background: #EAF3DE; color: #27500A; }
+.badge.rejetee { background: #FBE1E1; color: #791F1F; }
+.badge.nouvelle { background: #FAEEDA; color: #633806; }
+.btn-accept, .btn-reject { font-size: 12px; padding: 5px 12px; border-radius: 999px; border: none; cursor: pointer; margin-right: 6px; }
+.btn-accept { background: #E4131C; color: #fff; }
+.btn-reject { background: #F1EFE8; color: #444; }
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.btn-doc {
+  background: #f0f0f0;
+  border: none;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  &:hover { background: #e0e0e0; }
+}
+
+.btn-close {
+  margin-top: 1rem;
+  background: #C30508;
+  color: white;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+}

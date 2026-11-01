@@ -1,0 +1,80 @@
+<h1>📋 Décisions RH</h1>
+<p class="note">Dossiers déjà validés par le responsable de stage, en attente de votre décision finale.</p>
+
+@if (chargement) {
+  <div class="chargement">⏳ Chargement des demandes...</div>
+} @else {
+  @for (d of demandes; track d.id) {
+    <div class="demande-card">
+      <div class="demande-header">
+        <div class="stagiaire-info">
+          <span class="nom">{{ d.stagiaireNomComplet }}</span>
+          <span class="type-stage">{{ d.typeStage }}</span>
+          <span class="badge-attente">⏳ En attente</span>
+        </div>
+        <div class="actions">
+          <button class="btn-outline" (click)="ouvrirDecision(d.id)">✅ Approuver</button>
+          <button class="btn-reject" (click)="rejeter(d.id)">❌ Rejeter</button>
+        </div>
+      </div>
+
+      @if (demandeEnEditionId === d.id) {
+        <form (ngSubmit)="approuver(d.id)" class="form-decision">
+
+          <!-- Sélection du responsable de service -->
+          <label for="responsable-{{ d.id }}">Attribuer ce stage à :</label>
+          <select
+            id="responsable-{{ d.id }}"
+            [(ngModel)]="responsableStageId"
+            name="responsableStageId"
+            required
+          >
+            <option value="" disabled selected>Sélectionner un responsable</option>
+            @for (p of responsablesFiltres; track p.id) {
+              <option [value]="p.id">
+                {{ p.nomComplet }}
+                @if (p.serviceNom) { ({{ p.serviceNom }}) }
+              </option>
+            }
+          </select>
+
+          <!-- ========================================= -->
+          <!-- SECTION AFFECTATIONS                      -->
+          <!-- ========================================= -->
+          <div class="affectations-section">
+            <label>Affectations (services + dates) *</label>
+
+            @for (aff of affectations[d.id]; track $index; let i = $index) {
+              <div class="affectation-row">
+                <div class="row-fields">
+                  <select [(ngModel)]="aff.serviceId" [name]="'service-' + d.id + '-' + i" required>
+                    <option value="" disabled selected>Service</option>
+                    @for (svc of services; track svc.id) {
+                      <option [value]="svc.id">{{ svc.nom }}</option>
+                    }
+                  </select>
+                  <input type="date" [(ngModel)]="aff.dateDebut" [name]="'dateDebut-' + d.id + '-' + i" required />
+                  <input type="date" [(ngModel)]="aff.dateFin" [name]="'dateFin-' + d.id + '-' + i" required />
+                  @if (affectations[d.id].length > 1) {
+                    <button type="button" class="btn-remove" (click)="supprimerAffectation(d.id, i)">✕</button>
+                  }
+                </div>
+              </div>
+            }
+
+            <!-- Bouton "+ Ajouter un service" UNIQUEMENT pour OBSERVATION -->
+            @if (d.typeStage === 'OBSERVATION') {
+              <button type="button" class="btn-add-service" (click)="ajouterAffectation(d.id)">
+                + Ajouter un service
+              </button>
+            }
+          </div>
+
+          <button type="submit" class="btn-primary" [disabled]="!responsableStageId || affectationsLoading">
+            {{ affectationsLoading ? '⏳ Envoi en cours...' : '✅ Confirmer l\'approbation et les affectations' }}
+          </button>
+        </form>
+      }
+    </div>
+  }
+}

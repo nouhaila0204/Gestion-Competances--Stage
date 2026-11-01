@@ -1,0 +1,74 @@
+<div class="dashboard-layout">
+  <!-- Sidebar Gauche : Liste des stagiaires -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>👋 {{ nomResponsable }}</h2>
+      <p>Mes stagiaires ({{ stats.total }})</p>
+    </div>
+
+    @if (chargement) {
+      <div class="loading">Chargement...</div>
+    } @else if (stagiaires.length === 0) {
+      <p class="empty">Aucun stagiaire affecté.</p>
+    } @else {
+      <ul class="stagiaire-list">
+        @for (s of stagiaires; track s.id) {
+          <li class="stagiaire-item">
+            <div class="info">
+              <span class="name">{{ s.stagiaireNomComplet }}</span>
+              <span class="dates">{{ s.dateDebut }} - {{ s.dateFin || '...' }}</span>
+            </div>
+            <div class="badges">
+              @if (!s.hasEvaluation) {
+                <span class="badge danger">À évaluer</span>
+              }
+              @if (!s.hasRapport) {
+                <span class="badge warning">Sans rapport</span>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </aside>
+
+  <!-- Zone Principale : Statistiques -->
+  <main class="main-content">
+    <h1>Tableau de bord</h1>
+    <p class="subtitle">Vue d'ensemble de vos stagiaires</p>
+
+    @if (!chargement) {
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-info">
+            <span class="stat-value">{{ stats.total }}</span>
+            <span class="stat-label">Total Stagiaires</span>
+          </div>
+        </div>
+
+        <div class="stat-card warning">
+          <div class="stat-icon">📄</div>
+          <div class="stat-info">
+            <span class="stat-value">{{ stats.rapportsManquants }}</span>
+            <span class="stat-label">Rapports manquants</span>
+          </div>
+        </div>
+
+        <div class="stat-card danger">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-info">
+            <span class="stat-value">{{ stats.nonEvalues }}</span>
+            <span class="stat-label">Stagiaires non évalués</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-box">
+        <a routerLink="/responsable-service/evaluations" class="btn-primary">
+          ➔ Aller à la page d'évaluation
+        </a>
+      </div>
+    }
+  </main>
+</div>
